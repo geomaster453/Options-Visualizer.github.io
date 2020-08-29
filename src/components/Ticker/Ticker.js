@@ -12,6 +12,8 @@ function Ticker(props) {
   const dispatch = useDispatch();
   const currSymbol = useSelector(state => state.currentSymbol)
 
+  console.log("Rendered Ticker")
+
   useEffect(() => {
     async function getValidSymbols() {
       let response = await fetch('https://cloud.iexapis.com/stable/ref-data/iex/symbols?token=' + process.env.REACT_APP_IEX_API_KEY);
@@ -25,16 +27,19 @@ function Ticker(props) {
 
   function handleChange(event) {
     const cleanInput = event.target.value.trim().toUpperCase();
+    console.log("Set Disabled")
     if (cleanInput.length <= 5 && symbols.has(cleanInput)) {
       setDisabled(false);
     } else{ 
       setDisabled(true);
     }
+    console.log("Set Value")
     setCurinput(event.target.value);
   }
 
   function handleSubmit(event) {
     let cleanInput = curinput.trim().toUpperCase();
+    console.log("Submit")
     if (cleanInput !== currSymbol) {
       dispatch(allActions.changeSymbol(cleanInput))
     }

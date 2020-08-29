@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Chart.css';
 import {Line} from 'react-chartjs-2';
 import 'chartjs-plugin-annotation';
@@ -14,36 +14,25 @@ function Chart (props) {
   const [low, setLow] = useState(0);
   const symbol = useSelector(state => state.currentSymbol)
 
-  /*useEffect(() => {
+  console.log("Rendered Chart")
+
+  useEffect(() => {
     async function getTickerData(tick) {
-      console.log(tick);
       let response = await fetch('https://cloud.iexapis.com/stable/stock/' + tick + '/quote?token=' + process.env.REACT_APP_IEX_API_KEY);
       let data = await response.json();
       return data;
     }
     if (symbol !== undefined ){
       getTickerData(symbol).then(data => {
+        console.log("Set High")
         setHigh(data.week52High);
+        console.log("Set Low")
         setLow(data.week52Low);
+        console.log("Set Price")
         setQuote(data.latestPrice);
       });
     }
-  }, [symbol]);*/
-
-  async function getTickerData(tick) {
-    console.log(tick);      
-    let response = await fetch('https://cloud.iexapis.com/stable/stock/' + tick + '/quote?token=' + process.env.REACT_APP_IEX_API_KEY);
-    let data = await response.json();
-    return data;
-  }
-
-  if (symbol !== undefined ){
-    getTickerData(symbol).then(data => {
-      setHigh(data.week52High);
-      setLow(data.week52Low);
-      setQuote(data.latestPrice);
-    });
-  }
+  }, [symbol]);
 
   if (high !== 0){
     const intQuote = Math.floor(quote / 5) * 5;
